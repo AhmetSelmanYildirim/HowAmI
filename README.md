@@ -3,3 +3,14 @@
 Her kullanıcının kendine ait bir profili bulunmaktadır. Kullanıcılar birbirleri arasında takipleşebilir ve mesaj yoluyla birbirleri ile iletişime geçebilirler.
 
 Proje ilk olarak Android Studio ile geliştirilecek ve daha sonra bu platform için bir web sitesi geliştirilecektir.
+
+
+#03.04.2020
+-Proje oluşturuldu.
+-Firebase bağlantısı kuruldu.
+-Login sayfası oluşturuldu.
+
+#10.04.2020
+-Add post sayfası oluşturuldu.
+-Firebase storage bağlantısı kuruldu.
+-Storage'a fotoğraf yükleme işlemi başarıyla yapılıp indirme linki alınabiliniyor.
