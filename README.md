@@ -14,3 +14,7 @@ Proje ilk olarak Android Studio ile geliştirilecek ve daha sonra bu platform i�
 -Add post sayfası oluşturuldu.
 -Firebase storage bağlantısı kuruldu.
 -Storage'a fotoğraf yükleme işlemi başarıyla yapılıp indirme linki alınabiliniyor.
+
+#17.04.2020
+-Firebase database bağlantısı kuruldu.
+-Collection, document bağlantı testleri yapıldı.
