@@ -1,6 +1,7 @@
 package com.ahmetselmanyildirim.howami;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -11,10 +12,20 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.Map;
 
 public class FeedActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
+    private FirebaseFirestore firebaseFirestore;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -54,6 +65,43 @@ public class FeedActivity extends AppCompatActivity {
         setContentView(R.layout.activity_feed);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
+
+        getDataFromFireStore();
+    }
+
+    public void getDataFromFireStore(){
+
+        CollectionReference collectionReference = firebaseFirestore.collection("Posts");
+        //verileri veritabanından almak
+        collectionReference.orderBy("date", Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+
+                if (e != null){
+                    Toast.makeText(FeedActivity.this,e.getLocalizedMessage(),Toast.LENGTH_LONG).show();
+                }
+
+                if(queryDocumentSnapshots != null){
+                    //databasedeki dökümanları dizisine ulaşmak
+                    for(DocumentSnapshot snapshot : queryDocumentSnapshots.getDocuments()){
+
+                        Map<String,Object> data = snapshot.getData();
+
+                        String explanation = (String) data.get("explanation");
+                        String useremail = (String) data.get("useremail");
+                        String downloadURL = (String) data.get("downloadURL");
+
+                        System.out.println(explanation);
+
+                    }
+
+                }
+            }
+        });
 
     }
+
+
+
 }

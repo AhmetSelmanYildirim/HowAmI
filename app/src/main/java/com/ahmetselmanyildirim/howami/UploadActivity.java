@@ -23,11 +23,17 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.UUID;
 
 public class UploadActivity extends AppCompatActivity {
@@ -41,6 +47,8 @@ public class UploadActivity extends AppCompatActivity {
 
     private FirebaseStorage firebaseStorage;
     private StorageReference storageReference;
+    private FirebaseFirestore firebaseFirestore;
+    private FirebaseAuth firebaseAuth;
 
 
     @Override
@@ -56,6 +64,11 @@ public class UploadActivity extends AppCompatActivity {
         //deponun tanımlanması
         firebaseStorage = firebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
+
+        //database in tanımlanması
+        firebaseFirestore = FirebaseFirestore.getInstance();
+
+        firebaseAuth = FirebaseAuth.getInstance();
 
     }
 
@@ -138,9 +151,38 @@ public class UploadActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Uri uri) {
 
-                            String downloadUrl = uri.toString();
+                            String downloadUrl = uri.toString(); //oluşturulan download linkini almak
                             downloadLink.setText(downloadUrl);
 
+                            FirebaseUser firebaseUser = firebaseAuth.getCurrentUser(); //foto yükleyen kullanıcının adını alma
+                            String userEmail = firebaseUser.getEmail();
+
+                            String explanation = explanationText.getText().toString(); // explanation kısmına yazılan yazıyı alma
+
+                            //verileri tutmak için hash map oluşturma
+                            HashMap<String, Object> postData = new HashMap<>();
+                            postData.put("useremail",userEmail);
+                            postData.put("downloadURL",downloadUrl);
+                            postData.put("explanation",explanation);
+                            postData.put("date", FieldValue.serverTimestamp());
+
+                            //database e kayıt kısmı
+                            firebaseFirestore.collection("Posts").add(postData).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                @Override
+                                public void onSuccess(DocumentReference documentReference) {
+
+                                    Intent intent = new Intent(UploadActivity.this, FeedActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent);
+
+
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(UploadActivity.this,e.getLocalizedMessage().toString(),Toast.LENGTH_LONG).show();
+                                }
+                            });
 
                         }
                     });
