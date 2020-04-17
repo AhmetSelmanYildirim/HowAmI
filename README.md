@@ -6,6 +6,7 @@ Proje ilk olarak Android Studio ile geliştirilecek ve daha sonra bu platform i�
 
 
 #03.04.2020
+
 -Proje oluşturuldu.
 -Firebase bağlantısı kuruldu.
 -Login sayfası oluşturuldu.
