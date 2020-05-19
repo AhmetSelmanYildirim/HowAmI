@@ -26,3 +26,7 @@ Proje ilk olarak Android Studio ile geliştirilecek ve daha sonra bu platform i�
 -Firebase database bağlantısı kuruldu.
 
 -Collection, document bağlantı testleri yapıldı.
+
+#19.05.2020
+
+-recyclerView ile databaseden getirilen e-mail, açıklama, fotoğraf bilgileri gösterildi.
