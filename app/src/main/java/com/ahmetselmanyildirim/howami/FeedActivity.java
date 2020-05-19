@@ -3,6 +3,8 @@ package com.ahmetselmanyildirim.howami;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,12 +22,17 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class FeedActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
+    ArrayList<String> userEmailFromFB;
+    ArrayList<String> userExplanationFromFB;
+    ArrayList<String> userImageFromFB;
+    FeedRecyclerAdapter feedRecyclerAdapter;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -40,21 +47,16 @@ public class FeedActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         if(item.getItemId() == R.id.add_post){
-            Intent intent = new Intent(FeedActivity.this, UploadActivity.class);
-            startActivity(intent);
+            Intent intentToUpload = new Intent(FeedActivity.this, UploadActivity.class);
+            startActivity(intentToUpload);
         }else if (item.getItemId() == R.id.signout){
 
-            try{
             firebaseAuth.signOut();
 
             Intent intentToSignUp = new Intent(FeedActivity.this, SignUpActivity.class);
             startActivity(intentToSignUp);
             finish();
-            }catch (Exception e){
-                Toast.makeText(FeedActivity.this,e.getLocalizedMessage().toString(),Toast.LENGTH_LONG).show();
-            }
         }
-
 
         return super.onOptionsItemSelected(item);
     }
@@ -64,10 +66,22 @@ public class FeedActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
 
+        userExplanationFromFB = new ArrayList<String>();
+        userEmailFromFB = new ArrayList<String>();
+        userImageFromFB = new ArrayList<String>();
+
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
 
         getDataFromFireStore();
+
+        //RecyclerView
+
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        feedRecyclerAdapter = new FeedRecyclerAdapter(userEmailFromFB,userExplanationFromFB,userImageFromFB);
+        recyclerView.setAdapter(feedRecyclerAdapter);
+
     }
 
     public void getDataFromFireStore(){
@@ -88,20 +102,23 @@ public class FeedActivity extends AppCompatActivity {
 
                         Map<String,Object> data = snapshot.getData();
 
+                        //Casting
                         String explanation = (String) data.get("explanation");
-                        String useremail = (String) data.get("useremail");
+                        String userEmail = (String) data.get("useremail");
                         String downloadURL = (String) data.get("downloadURL");
 
-                        System.out.println(explanation);
+                        //Recycler viewe eklemek için Array Liste ekleme
+                        userExplanationFromFB.add(explanation);
+                        userEmailFromFB.add(userEmail);
+                        userImageFromFB.add(downloadURL);
+
+                        System.out.println(userExplanationFromFB);
+
+                        feedRecyclerAdapter.notifyDataSetChanged();
 
                     }
-
                 }
             }
         });
-
     }
-
-
-
 }
