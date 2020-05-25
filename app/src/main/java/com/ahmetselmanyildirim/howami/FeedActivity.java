@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,33 +35,35 @@ public class FeedActivity extends AppCompatActivity {
     ArrayList<String> userImageFromFB;
     FeedRecyclerAdapter feedRecyclerAdapter;
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
 
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.howami_options_menu,menu);
+    /*
+        @Override
+        public boolean onCreateOptionsMenu(Menu menu) {
 
-        return super.onCreateOptionsMenu(menu);
-    }
+            MenuInflater menuInflater = getMenuInflater();
+            menuInflater.inflate(R.menu.howami_options_menu,menu);
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        if(item.getItemId() == R.id.add_post){
-            Intent intentToUpload = new Intent(FeedActivity.this, UploadActivity.class);
-            startActivity(intentToUpload);
-        }else if (item.getItemId() == R.id.signout){
-
-            firebaseAuth.signOut();
-
-            Intent intentToSignUp = new Intent(FeedActivity.this, SignUpActivity.class);
-            startActivity(intentToSignUp);
-            finish();
+            return super.onCreateOptionsMenu(menu);
         }
 
-        return super.onOptionsItemSelected(item);
-    }
+        @Override
+        public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
+            if(item.getItemId() == R.id.add_post){
+                Intent intentToUpload = new Intent(FeedActivity.this, UploadActivity.class);
+                startActivity(intentToUpload);
+            }else if (item.getItemId() == R.id.signout){
+
+                firebaseAuth.signOut();
+
+                Intent intentToSignUp = new Intent(FeedActivity.this, SignUpActivity.class);
+                startActivity(intentToSignUp);
+                finish();
+            }
+
+            return super.onOptionsItemSelected(item);
+        }
+    */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,4 +124,22 @@ public class FeedActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void addPost(View view){
+
+        Intent intentToUpload = new Intent(FeedActivity.this, UploadActivity.class);
+        startActivity(intentToUpload);
+
+    }
+
+    public void signOut(View view){
+
+        firebaseAuth.signOut();
+
+        Intent intentToSignUp = new Intent(FeedActivity.this, SignUpActivity.class);
+        startActivity(intentToSignUp);
+        finish();
+
+    }
+
 }
