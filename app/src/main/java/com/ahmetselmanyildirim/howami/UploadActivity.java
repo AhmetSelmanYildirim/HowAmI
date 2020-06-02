@@ -5,12 +5,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.ImageDecoder;
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,8 +19,8 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,9 +31,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
 
 public class UploadActivity extends AppCompatActivity {
@@ -42,6 +44,8 @@ public class UploadActivity extends AppCompatActivity {
     ImageView imageView;
     EditText explanationText;
     Uri imageData;
+    ProgressBar progressBar;
+    int counter =0;
 
     private FirebaseStorage firebaseStorage;
     private StorageReference storageReference;
@@ -56,6 +60,7 @@ public class UploadActivity extends AppCompatActivity {
 
         imageView = findViewById(R.id.imageView2);
         explanationText = findViewById(R.id.explanationText);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         //deponun tanımlanması
         firebaseStorage = firebaseStorage.getInstance();
@@ -95,7 +100,6 @@ public class UploadActivity extends AppCompatActivity {
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
-
     //galeriye gidilebildiyse yapılacaklar
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -116,12 +120,9 @@ public class UploadActivity extends AppCompatActivity {
                     selectedImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(),imageData);
                     imageView.setImageBitmap(selectedImage);
                 }
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-
         }
 
         super.onActivityResult(requestCode, resultCode, data);
@@ -134,9 +135,22 @@ public class UploadActivity extends AppCompatActivity {
         final String imageName = "images/" + uuid + ".jpg";
 
         if(imageData == null){
-            Toast.makeText(UploadActivity.this,"Kardeşim Önce Görsel Seç",Toast.LENGTH_LONG).show();
+            Toast.makeText(UploadActivity.this,"Please Select a Picture",Toast.LENGTH_LONG).show();
         }
         else{
+            Toast.makeText(UploadActivity.this,"Your picture is being saved",Toast.LENGTH_LONG).show();
+            progressBar.setVisibility(View.VISIBLE);
+            final Timer t = new Timer();
+            TimerTask tt = new TimerTask() {
+                @Override
+                public void run() {
+                    counter++;
+                    progressBar.setProgress(counter);
+                }
+            };
+            t.schedule(tt,0,500);
+
+
 
             storageReference.child(imageName).putFile(imageData).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -183,7 +197,7 @@ public class UploadActivity extends AppCompatActivity {
                     });
 
 
-                    Toast.makeText(UploadActivity.this,"Resminiz kaydedilmiştir.".toString(),Toast.LENGTH_LONG).show();
+                    Toast.makeText(UploadActivity.this,"Your picture has been saved ".toString(),Toast.LENGTH_LONG).show();
 
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -196,8 +210,15 @@ public class UploadActivity extends AppCompatActivity {
 
         }
 
-
-
-
     }
+    public void rotateImage(View view){
+        BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+        Bitmap bitmap = drawable.getBitmap();
+        Matrix matrix = new Matrix();
+        matrix.postRotate(90);
+        Bitmap rotate = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+        imageView.setImageBitmap(rotate);
+    }
+
+
 }
