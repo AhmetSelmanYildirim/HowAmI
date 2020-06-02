@@ -18,7 +18,6 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -43,7 +42,6 @@ public class UploadActivity extends AppCompatActivity {
     ImageView imageView;
     EditText explanationText;
     Uri imageData;
-    EditText downloadLink;
 
     private FirebaseStorage firebaseStorage;
     private StorageReference storageReference;
@@ -55,8 +53,6 @@ public class UploadActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload);
-
-        downloadLink = findViewById(R.id.downloadLink);
 
         imageView = findViewById(R.id.imageView2);
         explanationText = findViewById(R.id.explanationText);
@@ -152,7 +148,6 @@ public class UploadActivity extends AppCompatActivity {
                         public void onSuccess(Uri uri) {
 
                             String downloadUrl = uri.toString(); //oluşturulan download linkini almak
-                            downloadLink.setText(downloadUrl);
 
                             FirebaseUser firebaseUser = firebaseAuth.getCurrentUser(); //foto yükleyen kullanıcının adını alma
                             String userEmail = firebaseUser.getEmail();

@@ -25,37 +25,24 @@
         android:id="@+id/explanationText"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
         android:layout_marginTop="25dp"
-        android:layout_marginBottom="29dp"
         android:ems="10"
         android:hint="Enter explanation"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/uploadButton"
+        app:layout_constraintEnd_toEndOf="@+id/imageView2"
         app:layout_constraintStart_toStartOf="@+id/imageView2"
         app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
-    <Button
-        android:id="@+id/uploadButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="191dp"
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="116dp"
+        android:layout_height="46dp"
         android:onClick="upload"
-        android:text="Upload"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/explanationText" />
-
-    <EditText
-        android:id="@+id/downloadLink"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="İndirme Linkiniz"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/uploadButton" />
+        app:layout_constraintEnd_toEndOf="@+id/explanationText"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="@+id/explanationText"
+        app:layout_constraintTop_toBottomOf="@+id/explanationText"
+        app:layout_constraintVertical_bias="0.333"
+        app:srcCompat="@drawable/uploadb" />
 </androidx.constraintlayout.widget.ConstraintLayout>

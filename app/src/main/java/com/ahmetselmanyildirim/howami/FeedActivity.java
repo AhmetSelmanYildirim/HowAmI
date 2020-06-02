@@ -1,6 +1,5 @@
 package com.ahmetselmanyildirim.howami;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -8,9 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -36,34 +32,7 @@ public class FeedActivity extends AppCompatActivity {
     FeedRecyclerAdapter feedRecyclerAdapter;
 
 
-    /*
-        @Override
-        public boolean onCreateOptionsMenu(Menu menu) {
 
-            MenuInflater menuInflater = getMenuInflater();
-            menuInflater.inflate(R.menu.howami_options_menu,menu);
-
-            return super.onCreateOptionsMenu(menu);
-        }
-
-        @Override
-        public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-            if(item.getItemId() == R.id.add_post){
-                Intent intentToUpload = new Intent(FeedActivity.this, UploadActivity.class);
-                startActivity(intentToUpload);
-            }else if (item.getItemId() == R.id.signout){
-
-                firebaseAuth.signOut();
-
-                Intent intentToSignUp = new Intent(FeedActivity.this, SignUpActivity.class);
-                startActivity(intentToSignUp);
-                finish();
-            }
-
-            return super.onOptionsItemSelected(item);
-        }
-    */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

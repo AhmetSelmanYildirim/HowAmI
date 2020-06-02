@@ -20,7 +20,6 @@ public class SignUpActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     EditText emailText, passwordText;
-    Button signUpButton, signInButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
